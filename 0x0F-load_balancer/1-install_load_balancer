@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 # Install and configure HAProxy on lb-01 server
 
-# Set the hostname for web servers
-HOSTNAME_PREFIX=463080
-WEB_SERVER_1="18.233.66.2-web-01"
-WEB_SERVER_2="54.87.238.243-web-02"
-
 # Install HAProxy
 sudo apt update
 sudo apt install -y haproxy
