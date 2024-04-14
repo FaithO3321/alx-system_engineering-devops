@@ -37,6 +37,9 @@ backend http_back
     server 463080-web-02 54.87.238.243:80 check
 EOF
 
+# Distributing connections with roundrobin
+echo "configured -Roundrobin On web-1 & web-02"
+
 # Restart HAProxy
 sudo systemctl restart haproxy
 
