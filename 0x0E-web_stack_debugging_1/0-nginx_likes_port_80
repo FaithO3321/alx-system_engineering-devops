@@ -8,8 +8,8 @@ sudo rm -f /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 # Modify configuration to listen on port 80 for all IPv4 IPs
-sudo sed -i '/^ *listen .*/d' /etc/nginx/sites-available/default
-sudo sed -i '/server_name _;/a \    listen 80;' /etc/nginx/sites-available/default
+sudo sed -i '/^\s*listen/s/#*//' /etc/nginx/sites-available/default
+sudo sed -i '/server_name _;/a \    listen 80;/g' /etc/nginx/sites-available/default
 
 # Restart Nginx to apply changes
 sudo systemctl restart nginx
