@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Configures changes on the web server
+
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sudo service nginx restart
+# Terminate nginx first process ID
+sudo kill -9 "$(pgrep nginx | head -n 1)"
