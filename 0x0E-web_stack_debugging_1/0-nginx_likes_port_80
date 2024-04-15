@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# Debbugging fixes for nginx
+# Configuring a server to listen to port 80
 
-# Link default file from sites-available to sites-enabled directory
-sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
-# Restart Nginx to apply changes
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 sudo service nginx restart
