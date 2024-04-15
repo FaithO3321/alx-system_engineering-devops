@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Debbugging fixes for nginx
 
 # Remove the default file in sites-enabled directory if it exists
 sudo rm -f /etc/nginx/sites-enabled/default
