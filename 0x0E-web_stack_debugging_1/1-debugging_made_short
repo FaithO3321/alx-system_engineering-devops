@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Configures changes on the web server
-
-sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-sudo service nginx restart
-sudo kill -9 "$(pgrep nginx | head -n 1)"
+# Configures an Nginx server to listen on port 80.
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx start
+kill "$(pgrep 'nginx' | head -1)"
