@@ -1,49 +1,59 @@
 #!/usr/bin/env bash
-# Install and configure HAProxy on lb-01 server
+# Install and configure HAProxy as a load balancer
 
-# Install HAProxy
-sudo apt update
-sudo apt install -y haproxy
+echo -e "Updating and doing some minor checks...\n"
+
+# Function to install packages if not already installed
+install() {
+    command -v "$1" &> /dev/null
+
+    if command -v "$1" &> /dev/null; then
+        echo -e "Installing: $1\n"
+        sudo apt-get update -y -qq || { echo "Error: Failed to update package lists"; exit 1; }
+        sudo apt-get install -y "$1" -qq || { echo "Error: Failed to install $1"; exit 1; }
+        echo -e "\n"
+    else
+        echo -e "${1} is already installed.\n"
+    fi
+}
+
+# Using func Install HAProxy
+install haproxy
+
+echo -e "\nSetting up HAProxy configuration.\n"
+
+# Backup default configuration file
+sudo cp /etc/haproxy/haproxy.cfg "/etc/haproxy/haproxy.cfg.$(date +"%Y%m%d_%H%M%S").bak"
 
 # Configure HAProxy
-sudo tee /etc/haproxy/haproxy.cfg > /dev/null <<EOF
-global
-    log /dev/log local0
-    log /dev/log local1 notice
-    chroot /var/lib/haproxy
-    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
-    stats timeout 30s
-    user haproxy
-    group haproxy
-    daemon
-
+sudo tee /etc/haproxy/haproxy.cfg >/dev/null <<EOF
 defaults
-    log global
     mode http
-    option httplog
-    option dontlognull
-    timeout connect 5000
-    timeout client  50000
-    timeout server  50000
+    timeout client 15s
+    timeout connect 10s
+    timeout server 15s
+    timeout http-request 10s
 
-frontend http_front
+frontend user-tech-frontend
     bind *:80
-    stats uri /haproxy?stats
-    default_backend http_back
+    default_backend user-tech-backend
 
-backend http_back
+backend user-tech-backend
     balance roundrobin
     server 463080-web-01 18.233.66.2:80 check
     server 463080-web-02 54.87.238.243:80 check
 EOF
 
-# Distributing connections with roundrobin
-echo "configured -Roundrobin On web-1 & web-02"
+# Enable HAProxy to be started by init script
+sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
 
-# Restart HAProxy
-sudo systemctl restart haproxy
+echo "HAProxy configuration completed - Roundrobin On web-01 & web-02"
 
-# Enable HAProxy init script
-sudo systemctl enable haproxy
+# Restart HAProxy service if not running, otherwise, reload configuration
+if ! pgrep -x "haproxy" >/dev/null; then
+    sudo service haproxy start
+else
+    sudo service haproxy reload
+fi
 
-echo "HAProxy installed and configured successfully."
+echo "HAProxy service restarted/reloaded."
