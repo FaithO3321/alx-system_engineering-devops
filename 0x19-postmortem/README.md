@@ -16,5 +16,5 @@ More Info
 Manual QA Review
 It is your responsibility to request a review for your postmortem from a peer before the project’s deadline. If no peers have been reviewed, you should request a review from a TA or staff member.
 
-https://medium.com/@faithomondi1331/postmortem-in-web-monitoring-2ed7b804fb62 for task 0
+https://docs.google.com/document/d/1VUWfN7zOjVpV2cpGSJKLY7dB-F6VTP85N1EUloK7vqo/edit?usp=sharing for task 0
 https://docs.google.com/document/d/1GnMivPTUm8AZ0TPZSzi27RT-RY2-PfPXr0lVau4tzHs/edit?usp=sharing for task 1
